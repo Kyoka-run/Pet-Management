@@ -1,36 +1,24 @@
 import pandas as pd
-from sklearn.preprocessing import StandardScaler
 from sklearn.model_selection import train_test_split
-import os
 
-# Define the relative path to the data file
-data_path = os.path.join('..', 'data generate', 'simulated_pet_data.csv')
+# Load the generated complex data
+data = pd.read_csv('..\data generate\simulated_dog_health_data_complex.csv')
 
-# Load the dataset using the relative path
-data = pd.read_csv(data_path)
+# Select relevant features for machine learning
+features = data[['gender', 'breed', 'age', 'temperature', 'heartbeat', 'activity_level', 'ambient_temperature']]
+labels = data.apply(lambda row: 1 if row['temperature'] > 39.5 or row['temperature'] < 37.0 or row['heartbeat'] > 140 or row['heartbeat'] < 60 else 0, axis=1)
 
-# Feature selection (only using temperature and heartbeat)
-features = data[['temperature', 'heartbeat']]
+# Split the data into training and testing sets (70% train, 30% test)
+X_train, X_test, y_train, y_test = train_test_split(features, labels, test_size=0.3, random_state=42)
 
-# Data normalization
-scaler = StandardScaler()
-features_scaled = scaler.fit_transform(features)
+# Combine features and labels, and name the label column explicitly
+train_data = pd.concat([X_train, y_train], axis=1)
+train_data.columns = list(X_train.columns) + ['label']
+test_data = pd.concat([X_test, y_test], axis=1)
+test_data.columns = list(X_test.columns) + ['label']
 
-# Split data into training (70%) and testing (30%) sets
-X_train, X_test = train_test_split(features_scaled, test_size=0.3, random_state=42)
+# Save the processed data
+train_data.to_csv('..\data generate\processed_train_data.csv', index=False)
+test_data.to_csv('..\data generate\processed_test_data.csv', index=False)
 
-# 将处理后的数据保存为新的CSV文件
-processed_data = pd.DataFrame(features_scaled, columns=['temperature', 'heartbeat'])
-
-# 将训练集和测试集保存到不同的文件
-train_data = pd.DataFrame(X_train, columns=['temperature', 'heartbeat'])
-test_data = pd.DataFrame(X_test, columns=['temperature', 'heartbeat'])
-
-# Define paths for saving the processed data
-train_data_path = os.path.join('..', 'data generate', 'processed_train_data.csv')
-test_data_path = os.path.join('..', 'data generate', 'processed_test_data.csv')
-
-# Save the processed training and testing data
-train_data.to_csv(train_data_path, index=False)
-test_data.to_csv(test_data_path, index=False)
-
+print("Data processing completed. Training and testing data saved.")

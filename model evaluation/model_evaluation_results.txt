@@ -1,0 +1,18 @@
+Model: isolation_forest_model.pkl
+Accuracy: 0.7917
+Precision: 0.7607
+Recall: 0.4785
+F1 Score: 0.5875
+--------------------------------------------------
+Model: random_forest_model.pkl
+Accuracy: 0.9983
+Precision: 0.9947
+Recall: 1.0000
+F1 Score: 0.9973
+--------------------------------------------------
+Model: knn_model.pkl
+Accuracy: 0.8717
+Precision: 0.9225
+Recall: 0.6398
+F1 Score: 0.7556
+--------------------------------------------------
