@@ -4,7 +4,7 @@ import geopandas as gpd
 from shapely.geometry import Point, Polygon as ShapelyPolygon
 
 # Define the geofence area using GPS coordinates
-geofence_coords = [(-6.2600, 53.3500), (-6.2600, 53.3200), (-6.2200, 53.3200), (-6.2200, 53.3500)]
+geofence_coords = [(-6.2600, 53.3500), (-6.2600, 53.3200), (-6.2350, 53.3200), (-6.2350, 53.3500)]
 geofence_polygon = ShapelyPolygon(geofence_coords)
 
 # Define the pet's path
